@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RekrutacjaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="branza">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nazwa" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="email">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="klient_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="klient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="limit_kredytowy" Type="int" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="branza_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="telefon">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="numer" Type="int" Nullable="false" />
+          <Property Name="klient_id" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Rekrutacja.dbo.select_branza' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="select_branza">
+          <Key>
+            <PropertyRef Name="Nazwa" />
+          </Key>
+          <Property Name="Nazwa" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Liczba klientow" Type="int" />
+          <Property Name="Suma limitu" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Rekrutacja.dbo.select_klient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="select_klient">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+            <PropertyRef Name="Limit kredytowy" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="E-mail" />
+            <PropertyRef Name="numer telefonu" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Limit kredytowy" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Branza" Type="varchar" MaxLength="50" />
+          <Property Name="E-mail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="numer telefonu" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Rekrutacja.dbo.select_mail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="select_mail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="Klient" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Klient" Type="int" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Rekrutacja.dbo.select_number' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="select_number">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Numer" />
+            <PropertyRef Name="Klient" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Numer" Type="int" Nullable="false" />
+          <Property Name="Klient" Type="int" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_email_klient">
+          <End Role="klient" Type="Self.klient" Multiplicity="1" />
+          <End Role="email" Type="Self.email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="klient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="email">
+              <PropertyRef Name="klient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_klient_branza">
+          <End Role="branza" Type="Self.branza" Multiplicity="1" />
+          <End Role="klient" Type="Self.klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branza">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="klient">
+              <PropertyRef Name="branza_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_telefon_klient">
+          <End Role="klient" Type="Self.klient" Multiplicity="1" />
+          <End Role="telefon" Type="Self.telefon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="klient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="telefon">
+              <PropertyRef Name="klient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RekrutacjaModelStoreContainer">
+          <EntitySet Name="branza" EntityType="Self.branza" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="email" EntityType="Self.email" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="klient" EntityType="Self.klient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="telefon" EntityType="Self.telefon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="select_branza" EntityType="Self.select_branza" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[select_branza].[Nazwa] AS [Nazwa], 
+[select_branza].[Liczba klientow] AS [Liczba klientow], 
+[select_branza].[Suma limitu] AS [Suma limitu]
+FROM [dbo].[select_branza] AS [select_branza]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="select_klient" EntityType="Self.select_klient" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[select_klient].[ID] AS [ID], 
+[select_klient].[Imie] AS [Imie], 
+[select_klient].[Nazwisko] AS [Nazwisko], 
+[select_klient].[Limit kredytowy] AS [Limit kredytowy], 
+[select_klient].[Status] AS [Status], 
+[select_klient].[Branza] AS [Branza], 
+[select_klient].[E-mail] AS [E-mail], 
+[select_klient].[numer telefonu] AS [numer telefonu]
+FROM [dbo].[select_klient] AS [select_klient]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="select_mail" EntityType="Self.select_mail" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[select_mail].[ID] AS [ID], 
+[select_mail].[email] AS [email], 
+[select_mail].[Klient] AS [Klient], 
+[select_mail].[Imie] AS [Imie], 
+[select_mail].[Nazwisko] AS [Nazwisko]
+FROM [dbo].[select_mail] AS [select_mail]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="select_number" EntityType="Self.select_number" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[select_number].[ID] AS [ID], 
+[select_number].[Numer] AS [Numer], 
+[select_number].[Klient] AS [Klient], 
+[select_number].[Imie] AS [Imie], 
+[select_number].[Nazwisko] AS [Nazwisko]
+FROM [dbo].[select_number] AS [select_number]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_email_klient" Association="Self.FK_email_klient">
+            <End Role="klient" EntitySet="klient" />
+            <End Role="email" EntitySet="email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_klient_branza" Association="Self.FK_klient_branza">
+            <End Role="branza" EntitySet="branza" />
+            <End Role="klient" EntitySet="klient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_telefon_klient" Association="Self.FK_telefon_klient">
+            <End Role="klient" EntitySet="klient" />
+            <End Role="telefon" EntitySet="telefon" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RekrutacjaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="branza">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="klient" Relationship="Self.FK_klient_branza" FromRole="branza" ToRole="klient" />
+        </EntityType>
+        <EntityType Name="email">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="email1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="klient_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="klient" Relationship="Self.FK_email_klient" FromRole="email" ToRole="klient" />
+        </EntityType>
+        <EntityType Name="klient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="limit_kredytowy" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="branza_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="branza" Relationship="Self.FK_klient_branza" FromRole="klient" ToRole="branza" />
+          <NavigationProperty Name="email" Relationship="Self.FK_email_klient" FromRole="klient" ToRole="email" />
+          <NavigationProperty Name="telefon" Relationship="Self.FK_telefon_klient" FromRole="klient" ToRole="telefon" />
+        </EntityType>
+        <EntityType Name="telefon">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="numer" Type="Int32" Nullable="false" />
+          <Property Name="klient_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="klient" Relationship="Self.FK_telefon_klient" FromRole="telefon" ToRole="klient" />
+        </EntityType>
+        <EntityType Name="select_branza">
+          <Key>
+            <PropertyRef Name="Nazwa" />
+          </Key>
+          <Property Name="Nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Liczba_klientow" Type="Int32" />
+          <Property Name="Suma_limitu" Type="Int32" />
+        </EntityType>
+        <EntityType Name="select_klient">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+            <PropertyRef Name="Limit_kredytowy" />
+            <PropertyRef Name="Status" />
+            <PropertyRef Name="E_mail" />
+            <PropertyRef Name="numer_telefonu" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Limit_kredytowy" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Branza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="E_mail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numer_telefonu" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="select_mail">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="email" />
+            <PropertyRef Name="Klient" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Klient" Type="Int32" Nullable="false" />
+          <Property Name="Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="select_number">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Numer" />
+            <PropertyRef Name="Klient" />
+            <PropertyRef Name="Imie" />
+            <PropertyRef Name="Nazwisko" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Numer" Type="Int32" Nullable="false" />
+          <Property Name="Klient" Type="Int32" Nullable="false" />
+          <Property Name="Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_klient_branza">
+          <End Role="branza" Type="Self.branza" Multiplicity="1" />
+          <End Role="klient" Type="Self.klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="branza">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="klient">
+              <PropertyRef Name="branza_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_email_klient">
+          <End Role="klient" Type="Self.klient" Multiplicity="1" />
+          <End Role="email" Type="Self.email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="klient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="email">
+              <PropertyRef Name="klient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_telefon_klient">
+          <End Role="klient" Type="Self.klient" Multiplicity="1" />
+          <End Role="telefon" Type="Self.telefon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="klient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="telefon">
+              <PropertyRef Name="klient_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RekrutacjaEntitie" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="branza" EntityType="Self.branza" />
+          <EntitySet Name="email" EntityType="Self.email" />
+          <EntitySet Name="klient" EntityType="Self.klient" />
+          <EntitySet Name="telefon" EntityType="Self.telefon" />
+          <EntitySet Name="select_branza" EntityType="Self.select_branza" />
+          <EntitySet Name="select_klient" EntityType="Self.select_klient" />
+          <EntitySet Name="select_mail" EntityType="Self.select_mail" />
+          <EntitySet Name="select_number" EntityType="Self.select_number" />
+          <AssociationSet Name="FK_klient_branza" Association="Self.FK_klient_branza">
+            <End Role="branza" EntitySet="branza" />
+            <End Role="klient" EntitySet="klient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_email_klient" Association="Self.FK_email_klient">
+            <End Role="klient" EntitySet="klient" />
+            <End Role="email" EntitySet="email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_telefon_klient" Association="Self.FK_telefon_klient">
+            <End Role="klient" EntitySet="klient" />
+            <End Role="telefon" EntitySet="telefon" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RekrutacjaModelStoreContainer" CdmEntityContainer="RekrutacjaEntitie">
+          <EntitySetMapping Name="branza">
+            <EntityTypeMapping TypeName="RekrutacjaModel.branza">
+              <MappingFragment StoreEntitySet="branza">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="email">
+            <EntityTypeMapping TypeName="RekrutacjaModel.email">
+              <MappingFragment StoreEntitySet="email">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email1" ColumnName="email" />
+                <ScalarProperty Name="klient_id" ColumnName="klient_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="klient">
+            <EntityTypeMapping TypeName="RekrutacjaModel.klient">
+              <MappingFragment StoreEntitySet="klient">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="limit_kredytowy" ColumnName="limit_kredytowy" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="branza_id" ColumnName="branza_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="telefon">
+            <EntityTypeMapping TypeName="RekrutacjaModel.telefon">
+              <MappingFragment StoreEntitySet="telefon">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="numer" ColumnName="numer" />
+                <ScalarProperty Name="klient_id" ColumnName="klient_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="select_branza">
+            <EntityTypeMapping TypeName="RekrutacjaModel.select_branza">
+              <MappingFragment StoreEntitySet="select_branza">
+                <ScalarProperty Name="Nazwa" ColumnName="Nazwa" />
+                <ScalarProperty Name="Liczba_klientow" ColumnName="Liczba klientow" />
+                <ScalarProperty Name="Suma_limitu" ColumnName="Suma limitu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="select_klient">
+            <EntityTypeMapping TypeName="RekrutacjaModel.select_klient">
+              <MappingFragment StoreEntitySet="select_klient">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+                <ScalarProperty Name="Limit_kredytowy" ColumnName="Limit kredytowy" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Branza" ColumnName="Branza" />
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+                <ScalarProperty Name="numer_telefonu" ColumnName="numer telefonu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="select_mail">
+            <EntityTypeMapping TypeName="RekrutacjaModel.select_mail">
+              <MappingFragment StoreEntitySet="select_mail">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="Klient" ColumnName="Klient" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="select_number">
+            <EntityTypeMapping TypeName="RekrutacjaModel.select_number">
+              <MappingFragment StoreEntitySet="select_number">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Numer" ColumnName="Numer" />
+                <ScalarProperty Name="Klient" ColumnName="Klient" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
